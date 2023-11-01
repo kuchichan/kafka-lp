@@ -1,0 +1,58 @@
+{
+    "namespace": "kafka-lp.avro",
+    "type": "record",
+    "name": "OrderReceived",
+    "fields": [
+        {"name": "ID", "type": "string", "logicalType": "uuid"},
+        {"name": "name", "type": "string"},
+        {"name": "timestamp", "type": "int", "logicalType": "timestamp-millis"},
+    ]
+},
+{
+    "namespace": "kafka-lp.avro",
+    "type": "record",
+    "name": "OrderConfirmed",
+    "fields": [
+        {"name": "ID", "type": "string", "logicalType": "uuid"},
+        {"name": "name", "type": "string"},
+        {"name": "timestamp", "type": "int", "logicalType": "timestamp-millis"},
+    ]
+},
+{
+    "namespace": "kafka-lp.avro",
+    "type": "record",
+    "name": "OrderFulfilled",
+    "fields": [
+        {"name": "ID", "type": "string", "logicalType": "uuid"},
+        {"name": "name", "type": "string"},
+        {"name": "timestamp", "type": "int", "logicalType": "timestamp-millis"},
+    ]
+},
+{
+    "namespace": "kafka-lp.avro",
+    "type": "record",
+    "name": "NotificationNeedsToBeSent",
+    "fields": [
+        {"name": "ID", "type": "string", "logicalType": "uuid"},
+        {"name": "name", "type": "string"},
+        {"name": "timestamp", "type": "int", "logicalType": "timestamp-millis"},
+        {"name": "email", "type": "string"},
+    ]
+},
+{
+    "namespace": "kafka-lp.avro",
+    "type": "record",
+    "name": "EventNotProcessed",
+    "fields": [
+        {"name": "ID", "type": "string", "logicalType": "uuid"},
+        {"name": "name", "type": "string"},
+        {"name": "timestamp", "type": "int", "logicalType": "timestamp-millis"},
+        {"name": "event", "type": [
+            "OrderReceived", 
+            "OrderConfirmed", 
+            "OrderFulfilled", 
+            "NotificationNeedsToBeSent"
+        ]},
+    ]
+}
+

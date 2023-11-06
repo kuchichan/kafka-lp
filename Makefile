@@ -19,3 +19,6 @@ docker/create-topics:
 	@echo "List created topics..."
 	docker exec -it kafka-lp_kafka_1 kafka-topics.sh --bootstrap-server localhost:9092 --list
 
+.PHONY: docker/consume
+docker/consume:
+	docker exec -it kafka-lp_kafka_1 kafka-console-consumer.sh --topic ${TOPIC_NAME} --from-beginning --bootstrap-server localhost:9092

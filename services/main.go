@@ -1,6 +1,13 @@
 package main
 
-import "kuchichan/kafka-lp/publisher"
+import (
+	"kuchichan/kafka-lp/events"
+	"kuchichan/kafka-lp/models"
+	"kuchichan/kafka-lp/publisher"
+	"time"
+
+	"github.com/google/uuid"
+)
 
 type OrderReceived struct {
 	ID        string `json:"ID"`
@@ -9,15 +16,20 @@ type OrderReceived struct {
 }
 
 func main() {
-	orderReceived := OrderReceived{
-		ID:        "25e85f0f-936d-4edc-9992-ad33611d80fb",
-		Name:      "OrderReceived",
-		Timestamp: 1698863768,
+	order := models.Order{
+		ID: uuid.New(),
+	}
+	event := events.OrderReceived{
+		BaseEvent: events.BaseEvent{
+			EventID:        uuid.New(),
+			EventTimestamp: time.Now(),
+		},
+		EventBody: order,
 	}
 	pb := publisher.InitPublisher()
 	defer pb.Close()
 
-	err := publisher.PublishMessage(pb, "order-received", orderReceived)
+	err := publisher.PublishMessage(pb, "order-received", event)
 	if err != nil {
 		panic(err)
 	}

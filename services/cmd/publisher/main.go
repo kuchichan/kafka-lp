@@ -1,9 +1,9 @@
 package main
 
 import (
-	"kuchichan/kafka-lp/events"
-	"kuchichan/kafka-lp/models"
-	"kuchichan/kafka-lp/publisher"
+	"kuchichan/kafka-lp/internal/events"
+	"kuchichan/kafka-lp/internal/models"
+	"kuchichan/kafka-lp/internal/msg-bus"
 	"time"
 
 	"github.com/google/uuid"
@@ -26,10 +26,10 @@ func main() {
 		},
 		EventBody: order,
 	}
-	pb := publisher.InitPublisher()
+	pb := message_bus.InitPublisher()
 	defer pb.Close()
 
-	err := publisher.PublishMessage(pb, "order-received", event)
+	err := message_bus.PublishMessage(pb, "order-received", event)
 	if err != nil {
 		panic(err)
 	}

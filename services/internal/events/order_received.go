@@ -1,7 +1,7 @@
 package events
 
 import (
-	"kuchichan/kafka-lp/models"
+	"kuchichan/kafka-lp/internal/models"
 	"time"
 
 	"github.com/google/uuid"

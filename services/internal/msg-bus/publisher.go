@@ -1,4 +1,4 @@
-package publisher
+package message_bus 
 
 import (
 	"encoding/json"

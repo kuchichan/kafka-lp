@@ -1,4 +1,4 @@
-package message_bus 
+package message_bus
 
 import (
 	"encoding/json"
@@ -7,17 +7,26 @@ import (
 	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
 )
 
-func InitPublisher() *kafka.Producer {
+type KafkaPublisher struct {
+	producer *kafka.Producer
+}
+
+type Publisher interface {
+	PublishMessage(topic string, message any) error
+	Close()
+}
+
+func InitPublisher() *KafkaPublisher {
 	p, err := kafka.NewProducer(&kafka.ConfigMap{"bootstrap.servers": "localhost"})
 	if err != nil {
 		panic(err)
 	}
-	return p
+	return &KafkaPublisher{producer: p}
 }
 
-func PublishMessage(p *kafka.Producer, topic string, message any) error {
+func (kp *KafkaPublisher) PublishMessage(topic string, message any) error {
 	go func() {
-		for e := range p.Events() {
+		for e := range kp.producer.Events() {
 			switch ev := e.(type) {
 			case *kafka.Message:
 				if ev.TopicPartition.Error != nil {
@@ -33,7 +42,7 @@ func PublishMessage(p *kafka.Producer, topic string, message any) error {
 		return err
 	}
 
-	p.Produce(
+	kp.producer.Produce(
 		&kafka.Message{
 			TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
 			Value:          js,
@@ -42,4 +51,8 @@ func PublishMessage(p *kafka.Producer, topic string, message any) error {
 	)
 
 	return nil
+}
+
+func (kp *KafkaPublisher) Close()  {
+	kp.producer.Close()	
 }

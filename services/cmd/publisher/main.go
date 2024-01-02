@@ -29,7 +29,7 @@ func main() {
 	pb := message_bus.InitPublisher()
 	defer pb.Close()
 
-	err := message_bus.PublishMessage(pb, "order-received", event)
+	err := pb.PublishMessage("order-received", event)
 	if err != nil {
 		panic(err)
 	}
